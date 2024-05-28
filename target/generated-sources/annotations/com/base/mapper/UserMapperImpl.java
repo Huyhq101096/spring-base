@@ -4,6 +4,8 @@ import com.base.dto.request.UserCreationRequest;
 import com.base.dto.request.UserUpdateRequest;
 import com.base.dto.response.UserResponse;
 import com.base.entity.User;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
@@ -41,10 +43,13 @@ public class UserMapperImpl implements UserMapper {
 
         userResponse.id( user.getId() );
         userResponse.username( user.getUsername() );
-        userResponse.password( user.getPassword() );
         userResponse.lastName( user.getLastName() );
         userResponse.firstName( user.getFirstName() );
         userResponse.dob( user.getDob() );
+        Set<String> set = user.getRoles();
+        if ( set != null ) {
+            userResponse.roles( new LinkedHashSet<String>( set ) );
+        }
 
         return userResponse.build();
     }
