@@ -21,6 +21,7 @@ import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +37,7 @@ import java.util.StringJoiner;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = lombok.AccessLevel.PRIVATE)
+@Slf4j
 public class AuthenticationService {
 
     UserRepository userRepository;
@@ -84,6 +86,7 @@ public class AuthenticationService {
 
     private String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
+
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(user.getUsername())
                 .issuer("devteria.com")
@@ -95,24 +98,23 @@ public class AuthenticationService {
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
+
         JWSObject jwsObject = new JWSObject(header, payload);
 
         try {
             jwsObject.sign(new MACSigner(SIGNER_KEY.getBytes()));
             return jwsObject.serialize();
         } catch (Exception e) {
-//            log.error("Can't create exception");
+            log.error("Can't create exception", e);
             throw new RuntimeException(e);
         }
-
-
-
     }
 
     private String buildScope(User user) {
         StringJoiner stringJoiner = new StringJoiner(" ");
         if (!CollectionUtils.isEmpty(user.getRoles()))
             user.getRoles().forEach(stringJoiner::add);
+
         return stringJoiner.toString();
     }
 

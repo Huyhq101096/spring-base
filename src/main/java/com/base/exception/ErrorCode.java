@@ -3,6 +3,7 @@ package com.base.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @NoArgsConstructor
@@ -16,6 +17,7 @@ public enum ErrorCode {
     PASSWORD_INVALID(1004, "Password must be at least 8 characters long"),
     USER_NOT_EXISTED(1005, "User not existed"),
     UNAUTHENTICATED(1006, "Unauthenticated"),
+    UNAUTHORIZED(1007, "You do not have permission"),
     ;
 
     private int code;

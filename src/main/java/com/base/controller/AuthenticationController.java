@@ -7,6 +7,7 @@ import com.base.dto.response.AuthenticationResponse;
 import com.base.dto.response.IntrospectResponse;
 import com.base.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +20,12 @@ import java.text.ParseException;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@FieldDefaults(makeFinal = true, level = lombok.AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class AuthenticationController {
 
     AuthenticationService authenticationService;
 
-    @PostMapping("/login")
+    @PostMapping("/token")
     public ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         var result = authenticationService.authenticate(request);
         return ApiResponse.<AuthenticationResponse>builder()

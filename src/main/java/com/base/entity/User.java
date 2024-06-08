@@ -15,12 +15,12 @@ import java.time.LocalDate;
 import java.util.Set;
 
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
 public class User {
 
     @Id

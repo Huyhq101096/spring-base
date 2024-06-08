@@ -60,11 +60,10 @@ public class UserService {
     }
 
     public void deleteUser(String userId) {
-//        User user = getUser(userId);
         userRepository.deleteById(userId);
     }
 
-//    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserResponse> getUsers() {
         log.info("In method getUsers");
         return userRepository.findAll().stream()
