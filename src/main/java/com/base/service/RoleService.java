@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,7 @@ public class RoleService {
     RoleMapper roleMapper;
 
     public RoleResponse create(RoleRequest request) {
+
         var role = roleMapper.toRole(request);
 
         var permissions = permissionRepository.findAllById(request.getPermissions());
@@ -34,4 +36,18 @@ public class RoleService {
 
         return roleMapper.toRoleResponse(role);
     }
+
+    public List<RoleResponse> getAll() {
+
+        return roleRepository.findAll().stream()
+                .map(roleMapper::toRoleResponse)
+                .toList();
+    }
+
+    public void delete(String roleId) {
+        roleRepository.deleteById(roleId);
+    }
+
+
+
 }
