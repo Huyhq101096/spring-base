@@ -3,6 +3,7 @@ package com.base.configuration;
 import com.base.dto.request.IntrospectRequest;
 import com.base.service.AuthenticationService;
 import com.nimbusds.jose.JOSEException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -22,6 +23,7 @@ public class CustomJwtDecoder implements JwtDecoder {
     @Value("${jwt.signerKey}")
     private String signerKey;
 
+    @Autowired
     private AuthenticationService authenticationService;
 
     private NimbusJwtDecoder nimbusJwtDecoder = null;
@@ -51,6 +53,6 @@ public class CustomJwtDecoder implements JwtDecoder {
         }
 
 
-        return null;
+        return nimbusJwtDecoder.decode(token);
     }
 }
